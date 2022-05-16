@@ -1,19 +1,12 @@
 #!/bin/sh
 # project info
-export DEPLOYER_PROJECT_ID=flx-dwd-run-deploy
-export ATTESTOR_PROJECT_ID=flx-dwd-run-attest
-export ATTESTATION_PROJECT_ID=${ATTESTOR_PROJECT_ID}
+SEQ="-1"
+export DEPLOYER_PROJECT_ID=flx-dwd-run-deploy${SEQ}
+export ATTESTOR_PROJECT_ID=flx-dwd-run-attestor${SEQ}
+export ATTESTATION_PROJECT_ID=flx-dwd-run-attestation${SEQ}
 
 export ORG_ID=432347649698
-
-export DEPLOY_SA_KEY="/Users/davepuglielli/sa_keys/run-deployer-sa.json"
-export ATTEST_SA_KEY="/Users/davepuglielli/sa_keys/attest-sa.json"
-
-export RUN_DEPLOYER_ID="service-run-deployer"
-export RUN_DEPLOYER_EMAIL="${RUN_DEPLOYER_ID}@${DEPLOYER_PROJECT_ID}.iam.gserviceaccount.com"
-
-export ATTESTATION_SA_ID="service-attestation"
-export ATTESTATION_SA_EMAIL="${ATTESTATION_SA_ID}@${ATTESTOR_PROJECT_ID}.iam.gserviceaccount.com"
+export BILLING_ACCOUNT=01249C-50AD5E-7A20E6
 
 # Set the container name
 export CONTAINER_NAME=hello-world

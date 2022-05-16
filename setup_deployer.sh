@@ -1,34 +1,5 @@
 #!/bin/sh
-source ./vars.sh
-
-#DEPLOYER_PROJECT_NUMBER=$(gcloud projects describe "${DEPLOYER_PROJECT_ID}" \
-#    --format="value(projectNumber)")
-
-# if [ -z "$DEPLOYER_PROJECT_NUMBER" ]
-#then
-#      echo "$DEPLOYER_PROJECT_ID \$DEPLOYER_PROJECT_NUMBER is empty"
-#      gcloud projects create $DEPLOYER_PROJECT_ID --organization=$ORG_ID
-#      DEPLOYER_PROJECT_NUMBER=$(gcloud projects describe "${DEPLOYER_PROJECT_ID}"  --format="value(projectNumber)")
-#fi
-
-export DEPLOYER_PROJECT_NUMBER=$(gcloud projects describe "${DEPLOYER_PROJECT_ID}" \
-    --format="value(projectNumber)")
-
-export DEPLOYER_SERVICE_ACCOUNT="service-${DEPLOYER_PROJECT_NUMBER}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-
-export ATTESTOR_PROJECT_NUMBER=$(gcloud projects describe "${ATTESTOR_PROJECT_ID}" \
-    --format="value(projectNumber)")
-export ATTESTOR_SERVICE_ACCOUNT="service-${ATTESTOR_PROJECT_NUMBER}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-
-echo "BinAuth service accounts $DEPLOYER_SERVICE_ACCOUNT and $ATTESTOR_SERVICE_ACCOUNT"
-
-gcloud --project=${DEPLOYER_PROJECT_ID} \
-  services enable \
-    containeranalysis.googleapis.com \
-    container.googleapis.com \
-    artifactregistry.googleapis.com \
-    binaryauthorization.googleapis.com \
-    run.googleapis.com
+source ./SA-vars.sh
 
 gcloud artifacts repositories create ${CONTAINER_DIR} \
     --repository-format=Docker \
@@ -49,7 +20,7 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 gcloud projects add-iam-policy-binding ${DEPLOYER_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/storage.admin"
 gcloud projects add-iam-policy-binding ${DEPLOYER_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/artifactregistry.writer"
-gcloud projects add-iam-policy-binding ${DEPLOYER_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/containeranalysis.occurrences.editor"
+# gcloud projects add-iam-policy-binding ${DEPLOYER_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/containeranalysis.occurrences.editor"
 gcloud projects add-iam-policy-binding ${DEPLOYER_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/run.developer"
 gcloud projects add-iam-policy-binding ${DEPLOYER_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/run.serviceAgent"
 gcloud projects add-iam-policy-binding ${DEPLOYER_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/run.admin"

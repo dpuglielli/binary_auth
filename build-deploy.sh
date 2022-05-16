@@ -1,16 +1,14 @@
 #!/bin/bash
-source ./vars.sh
+source ./SA-vars.sh
 
 # setup auth
-gcloud auth revoke --all
-gcloud auth activate-service-account --key-file="${DEPLOY_SA_KEY}"
-
-DIGEST=$(gcloud --project=${DEPLOYER_PROJECT_ID} container images describe ${CONTAINER_PATH}:latest --format='get(image_summary.digest)')
+# gcloud auth revoke --all
+# gcloud auth activate-service-account --key-file="${DEPLOY_SA_KEY}"
 
 # Build container
 docker build -t $CONTAINER_PATH ./src
-GOOGLE_APPLICATION_CREDENTIALS="${SA_KEY_PATH}"
-echo $GOOGLE_APPLICATION_CREDENTIALS
+# GOOGLE_APPLICATION_CREDENTIALS="${SA_KEY_PATH}"
+# echo $GOOGLE_APPLICATION_CREDENTIALS
 
 # Auth for cloud shell docker to Google Container Registry
 gcloud auth configure-docker --quiet --project=${DEPLOYER_PROJECT_ID}
@@ -18,6 +16,10 @@ gcloud auth configure-docker --quiet --project=${DEPLOYER_PROJECT_ID}
 # Push to Google Container Registry
 docker push $CONTAINER_PATH
 
+# Get built continaer hash
+DIGEST=$(gcloud --project=${DEPLOYER_PROJECT_ID} container images describe ${CONTAINER_PATH}:latest --format='get(image_summary.digest)')
+
+echo "got hash ${DIGEST}"
 # Sign and create attestation for container
 gcloud beta container binauthz attestations sign-and-create  \
     --artifact-url="${CONTAINER_PATH}@${DIGEST}" \
@@ -41,5 +43,5 @@ gcloud run deploy ${SERVICE_NAME} \
   --allow-unauthenticated \
   --project="${DEPLOYER_PROJECT_ID}" 
 
-unset GOOGLE_APPLICATION_CREDENTIALS
-gcloud auth revoke --all
+# unset GOOGLE_APPLICATION_CREDENTIALS
+# gcloud auth revoke --all

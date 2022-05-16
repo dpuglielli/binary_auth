@@ -1,0 +1,93 @@
+Updated IAM policy for project [flx-dwd-run-attestor-1].
+bindings:
+- members:
+  - serviceAccount:service-577973677189@gcp-sa-binaryauthorization.iam.gserviceaccount.com
+  role: roles/binaryauthorization.serviceAgent
+- members:
+  - serviceAccount:service-577973677189@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-577973677189@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-577973677189@container-analysis.iam.gserviceaccount.com
+  role: roles/containeranalysis.ServiceAgent
+- members:
+  - serviceAccount:service-577973677189@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:577973677189-compute@developer.gserviceaccount.com
+  - serviceAccount:577973677189@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - user:dpuglielli@flexion.us
+  - user:dvega@flexion.us
+  role: roles/owner
+- members:
+  - serviceAccount:service-577973677189@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/pubsub.serviceAgent
+etag: BwXfH-b7kOQ=
+version: 1
+Updated IAM policy for project [flx-dwd-run-deploy-1].
+bindings:
+- members:
+  - serviceAccount:service-711115352429@gcp-sa-binaryauthorization.iam.gserviceaccount.com
+  role: roles/binaryauthorization.serviceAgent
+- members:
+  - serviceAccount:service-711115352429@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-711115352429@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-711115352429@container-analysis.iam.gserviceaccount.com
+  role: roles/containeranalysis.ServiceAgent
+- members:
+  - serviceAccount:service-711115352429@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:711115352429-compute@developer.gserviceaccount.com
+  - serviceAccount:711115352429@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - user:dpuglielli@flexion.us
+  - user:dvega@flexion.us
+  role: roles/owner
+- members:
+  - serviceAccount:service-711115352429@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/pubsub.serviceAgent
+- members:
+  - serviceAccount:service-711115352429@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+etag: BwXfH-cdYNk=
+version: 1
+Updated IAM policy for project [flx-dwd-run-attestation-1].
+bindings:
+- members:
+  - serviceAccount:service-468141535049@gcp-sa-binaryauthorization.iam.gserviceaccount.com
+  role: roles/binaryauthorization.serviceAgent
+- members:
+  - serviceAccount:service-468141535049@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-468141535049@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-468141535049@container-analysis.iam.gserviceaccount.com
+  role: roles/containeranalysis.ServiceAgent
+- members:
+  - serviceAccount:service-468141535049@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:468141535049-compute@developer.gserviceaccount.com
+  - serviceAccount:468141535049@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - user:dpuglielli@flexion.us
+  - user:dvega@flexion.us
+  role: roles/owner
+- members:
+  - serviceAccount:service-468141535049@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/pubsub.serviceAgent
+etag: BwXfH-c-yh4=
+version: 1

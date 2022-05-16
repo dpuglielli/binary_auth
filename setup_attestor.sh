@@ -1,44 +1,15 @@
 #!/bin/sh
-source ./vars.sh
-
-#ATTESTOR_PROJECT_NUMBER=$(gcloud projects describe "${ATTESTOR_PROJECT_ID}" \
-#    --format="value(projectNumber)")
-#
-#if [ -z "$ATTESTOR_PROJECT_NUMBER" ]
-#then
-#      echo "$ATTESTOR_PROJECT_ID \$ATTESTOR_PROJECT_NUMBER is empty"
-#      gcloud projects create $ATTESTOR_PROJECT_ID --organization=$ORG_ID
-#
-#fi
-
-export DEPLOYER_PROJECT_NUMBER=$(gcloud projects describe "${DEPLOYER_PROJECT_ID}" \
-    --format="value(projectNumber)")
-
-export DEPLOYER_SERVICE_ACCOUNT="service-${DEPLOYER_PROJECT_NUMBER}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-
-export ATTESTOR_PROJECT_NUMBER=$(gcloud projects describe "${ATTESTOR_PROJECT_ID}" \
-    --format="value(projectNumber)")
-export ATTESTOR_SERVICE_ACCOUNT="service-${ATTESTOR_PROJECT_NUMBER}@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
-
-
-echo "BinAuth service accounts $DEPLOYER_SERVICE_ACCOUNT and $ATTESTOR_SERVICE_ACCOUNT"
-
-gcloud --project=${ATTESTOR_PROJECT_ID} \
-  services enable \
-    containeranalysis.googleapis.com \
-    container.googleapis.com \
-    binaryauthorization.googleapis.com \
-    cloudkms.googleapis.com
+source ./SA-vars.sh
 
 echo "Creating note..."
 curl "https://containeranalysis.googleapis.com/v1/projects/${ATTESTOR_PROJECT_ID}/notes/?noteId=${NOTE_ID}" \
   --request "POST" \
   --header "Content-Type: application/json" \
   --header "Authorization: Bearer $(gcloud auth print-access-token)" \
-  --header "X-Goog-User-Project: ${GOOGLE_CLOUD_PROJECT}" \
+  --header "X-Goog-User-Project: ${ATTESTOR_PROJECT_ID}" \
   --data-binary @- <<EOF
     {
-      "name": "projects/${GOOGLE_CLOUD_PROJECT}/notes/${NOTE_ID}",
+      "name": "projects/${ATTESTOR_PROJECT_ID}/notes/${NOTE_ID}",
       "attestation": {
         "hint": {
           "human_readable_name": "Application From GitHub Workflow"
@@ -54,6 +25,7 @@ curl \
 -H "Authorization: Bearer $(gcloud auth print-access-token)" \
 "https://containeranalysis.googleapis.com/v1/projects/${ATTESTOR_PROJECT_ID}/notes/${NOTE_ID}"
 
+
 echo "Creating attestor..."
 # Create Attestor
 gcloud container binauthz attestors create $ATTESTOR_NAME \
@@ -65,18 +37,17 @@ gcloud container binauthz attestors create $ATTESTOR_NAME \
 echo "Verifying attestors..."
 sleep 2
 
-gcloud --project=${ATTESTOR_PROJECT_ID} \
-    container binauthz attestors list
+gcloud --project=${ATTESTOR_PROJECT_ID}  container binauthz attestors list
 
-echo "Add IAM for ${DEPLOYER_SERVICE_ACCOUNT}..."
+echo "Add IAM for ${DEPLOYER_BA_SA}..."
 sleep 2
 gcloud --project ${ATTESTOR_PROJECT_ID} \
     container binauthz attestors add-iam-policy-binding \
     "projects/${ATTESTOR_PROJECT_ID}/attestors/${ATTESTOR_NAME}" \
-    --member="serviceAccount:${DEPLOYER_SERVICE_ACCOUNT}" \
+    --member="serviceAccount:${DEPLOYER_BA_SA}" \
     --role=roles/binaryauthorization.attestorsVerifier
 
-echo "Add IAM for ${ATTESTOR_SERVICE_ACCOUNT}..."
+echo "Add IAM for ${ATTESTOR_BA_SA}..."
 # Set IAM Permissions for Note
 curl "https://containeranalysis.googleapis.com/v1/projects/${ATTESTOR_PROJECT_ID}/notes/${NOTE_ID}:setIamPolicy" \
   --request POST \
@@ -90,7 +61,7 @@ curl "https://containeranalysis.googleapis.com/v1/projects/${ATTESTOR_PROJECT_ID
         "bindings": [{
           "role": "roles/containeranalysis.notes.occurrences.viewer",
           "members": [
-            "serviceAccount:${ATTESTOR_SERVICE_ACCOUNT}"
+            "serviceAccount:${ATTESTOR_BA_SA}"
           ]
         }]
       }
