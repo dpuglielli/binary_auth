@@ -1,14 +1,15 @@
 #!/bin/bash
-source ./SA-vars.sh
+source ./vars.sh
 
 # setup auth
-# gcloud auth revoke --all
-# gcloud auth activate-service-account --key-file="${DEPLOY_SA_KEY}"
+SAVED_ACCOUNT=`gcloud config get-value account`
+gcloud auth activate-service-account --key-file="${RUN_DEPLOYER_SA_KEY}"
+export GOOGLE_APPLICATION_CREDENTIALS="${RUN_DEPLOYER_SA_KEY}"
+echo $GOOGLE_APPLICATION_CREDENTIALS
+gcloud auth list
 
 # Build container
 docker build -t $CONTAINER_PATH ./src
-# GOOGLE_APPLICATION_CREDENTIALS="${SA_KEY_PATH}"
-# echo $GOOGLE_APPLICATION_CREDENTIALS
 
 # Auth for cloud shell docker to Google Container Registry
 gcloud auth configure-docker --quiet --project=${DEPLOYER_PROJECT_ID}
@@ -43,5 +44,6 @@ gcloud run deploy ${SERVICE_NAME} \
   --allow-unauthenticated \
   --project="${DEPLOYER_PROJECT_ID}" 
 
-# unset GOOGLE_APPLICATION_CREDENTIALS
-# gcloud auth revoke --all
+unset GOOGLE_APPLICATION_CREDENTIALS
+gcloud config set account ${SAVED_ACCOUNT}
+gcloud auth list

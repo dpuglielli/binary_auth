@@ -50,6 +50,7 @@ gcloud --project=${DEPLOYER_PROJECT_ID} \
     container.googleapis.com \
     artifactregistry.googleapis.com \
     binaryauthorization.googleapis.com \
+    cloudkms.googleapis.com \
     run.googleapis.com
 
 gcloud --project=${ATTESTATION_PROJECT_ID} \
