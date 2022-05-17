@@ -41,3 +41,21 @@ gcloud beta billing projects link ${DEPLOYER_PROJECT_ID} --billing-account=${BIL
 gcloud projects add-iam-policy-binding ${ATTESTOR_PROJECT_ID} --member="user:dvega@flexion.us" --role="roles/owner"
 gcloud projects add-iam-policy-binding ${DEPLOYER_PROJECT_ID} --member="user:dvega@flexion.us" --role="roles/owner"
 #gcloud projects add-iam-policy-binding ${ATTESTATION_PROJECT_ID} --member="user:dvega@flexion.us" --role="roles/owner"
+
+# NEED TO ENABLE SERVICE FIRST SO DEFAULT SERVICE ACCOUNTS ARE CREATED
+# enable services 
+gcloud --project=${ATTESTOR_PROJECT_ID} \
+  services enable \
+    containeranalysis.googleapis.com \
+    binaryauthorization.googleapis.com \
+    cloudkms.googleapis.com
+
+
+# enable services
+gcloud --project=${DEPLOYER_PROJECT_ID} \
+  services enable \
+    container.googleapis.com \
+    artifactregistry.googleapis.com \
+    binaryauthorization.googleapis.com \
+    cloudkms.googleapis.com \
+    run.googleapis.com
