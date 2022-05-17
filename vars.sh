@@ -1,6 +1,6 @@
 #!/bin/sh
 # project info
-SEQ="-2"
+SEQ="-5"
 export DEPLOYER_PROJECT_ID=flx-dwd-run-deploy${SEQ}
 export ATTESTOR_PROJECT_ID=flx-dwd-run-attestor${SEQ}
 export ATTESTATION_PROJECT_ID=flx-dwd-run-attestation${SEQ}
