@@ -1,6 +1,16 @@
 #!/bin/sh
-source ./SA-vars.sh
+. ./SA-vars.sh
 
+# enable services
+gcloud --project=${DEPLOYER_PROJECT_ID} \
+  services enable \
+    container.googleapis.com \
+    artifactregistry.googleapis.com \
+    binaryauthorization.googleapis.com \
+    cloudkms.googleapis.com \
+    run.googleapis.com
+
+# create artifact repository
 gcloud artifacts repositories create ${CONTAINER_DIR} \
     --repository-format=Docker \
     --location=${LOCATION} \

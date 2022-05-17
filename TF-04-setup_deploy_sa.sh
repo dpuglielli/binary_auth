@@ -1,5 +1,5 @@
 #!/bin/sh
-source ./SA-vars.sh
+. ./SA-vars.sh
 
 echo "Creating ${RUN_DEPLOYER_EMAIL} service account in ${DEPLOYER_PROJECT_ID} project"
 gcloud iam service-accounts create ${RUN_DEPLOYER_ID} \
@@ -52,7 +52,7 @@ curl "https://containeranalysis.googleapis.com/v1/projects/${ATTESTOR_PROJECT_ID
     }
 EOF
 
-echo "Setting permissions on  ${ATTESTATION_PROJECT_ID} for ${RUN_DEPLOYER_EMAIL} service account"
-gcloud projects add-iam-policy-binding ${ATTESTATION_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/containeranalysis.ServiceAgent"
+echo "Setting permissions on  ${ATTESTOR_PROJECT_ID} for ${RUN_DEPLOYER_EMAIL} service account"
+gcloud projects add-iam-policy-binding ${ATTESTOR_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/containeranalysis.ServiceAgent"
 
 

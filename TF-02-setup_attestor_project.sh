@@ -1,5 +1,12 @@
 #!/bin/sh
-source ./SA-vars.sh
+. ./SA-vars.sh
+
+# enable services 
+gcloud --project=${ATTESTOR_PROJECT_ID} \
+  services enable \
+    containeranalysis.googleapis.com \
+    binaryauthorization.googleapis.com \
+    cloudkms.googleapis.com
 
 echo "Creating note..."
 curl "https://containeranalysis.googleapis.com/v1/projects/${ATTESTOR_PROJECT_ID}/notes/?noteId=${NOTE_ID}" \

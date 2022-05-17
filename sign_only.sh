@@ -23,11 +23,11 @@ gcloud beta container binauthz attestations sign-and-create  \
     --keyversion-keyring="${KEYRING}" \
     --keyversion-key="${KEY_NAME}" \
     --keyversion="${KEY_VERSION}" \
-    --project="${ATTESTATION_PROJECT_ID}" \
+    --project="${ATTESTOR_PROJECT_ID}" \
     --validate
 
 echo "List attestations for ${DIGEST}"
-gcloud --project=${ATTESTATION_PROJECT_ID} \
+gcloud --project=${ATTESTOR_PROJECT_ID} \
     container binauthz attestations list \
     --attestor=$ATTESTOR_NAME --attestor-project=$ATTESTOR_PROJECT_ID
 
