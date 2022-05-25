@@ -25,6 +25,7 @@ gcloud projects add-iam-policy-binding ${DEPLOYER_PROJECT_ID} --member="serviceA
 echo "Setting role permissions on  ${ATTESTOR_PROJECT_ID} for ${RUN_DEPLOYER_EMAIL} service account"
 gcloud projects add-iam-policy-binding ${ATTESTOR_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/binaryauthorization.attestorsVerifier"
 gcloud projects add-iam-policy-binding ${ATTESTOR_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/cloudkms.signerVerifier"
+gcloud projects add-iam-policy-binding ${ATTESTOR_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/containeranalysis.occurrences.editor"
 
 echo "Setting note permissions on  ${ATTESTOR_PROJECT_ID} for ${RUN_DEPLOYER_EMAIL} service account"
 curl "https://containeranalysis.googleapis.com/v1/projects/${ATTESTOR_PROJECT_ID}/notes/${NOTE_ID}:setIamPolicy" \
@@ -51,8 +52,5 @@ curl "https://containeranalysis.googleapis.com/v1/projects/${ATTESTOR_PROJECT_ID
       }
     }
 EOF
-
-echo "Setting permissions on  ${ATTESTOR_PROJECT_ID} for ${RUN_DEPLOYER_EMAIL} service account"
-gcloud projects add-iam-policy-binding ${ATTESTOR_PROJECT_ID} --member="serviceAccount:${RUN_DEPLOYER_EMAIL}" --role="roles/containeranalysis.ServiceAgent"
 
 
